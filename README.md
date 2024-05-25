@@ -17,3 +17,10 @@ This website is designed to showcase films by fetching data from an API. Users c
 - **CSS**: Styling the website, using Bootstrap for layout and components.
 - **JavaScript**: Code, for fetching data from the API and handling user interactions (clicking on the posters or the "Details" button).
 - **Bootstrap**: Responsive grid system and UI components paired with css.
+
+## HOW TO INSTALL
+
+- Download all the files present in this repository and run index.HTML.
+NOTE: Films will only function if the API is online or run on your machine locally,
+
+-https://github.com/OpenClassrooms-Student-Center/OCMovies-API-EN-FR for more information
