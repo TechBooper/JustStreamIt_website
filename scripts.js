@@ -1,25 +1,20 @@
 document.addEventListener('DOMContentLoaded', function() {
-    fetchBestFilm(); // Function to fetch and display the best film
-    fetchTopRatedFilms(); // Fetch top rated films
+    fetchBestFilm(); 
+    fetchTopRatedFilms(); 
     fetchCategoryFilms('category-1', 'Drama');
     fetchCategoryFilms('category-2', 'Comedy');
     fetchCategoryFilms('free-category', '', 'Free Category');
-    fetchCategoryFilms('free-category-2', '', 'Free Category 2'); // 
+    fetchCategoryFilms('free-category-2', '', 'Free Category 2');
 
     const categorySelect = document.getElementById('category-select');
-    populateCategories(categorySelect);
+    if (categorySelect) {
+        populateCategories(categorySelect);
+    }
 
     const categorySelect2 = document.getElementById('category-select-2');
-    populateCategories(categorySelect2, 'free-category-2');
-
-    document.getElementById('sort-button').addEventListener('click', () => {
-        const sortCriteria = document.getElementById('sort-select').value;
-        const minScore = document.getElementById('min-score-input').value;
-        fetchTopRatedFilms({
-            sort_by: sortCriteria,
-            imdb_score_min: minScore
-        });
-    });
+    if (categorySelect2) {
+        populateCategories(categorySelect2, 'free-category-2');
+    }
 });
 
 
@@ -97,7 +92,6 @@ function fetchBestFilm() {
         })
         .then(data => {
             if (data.results && data.results.length > 0) {
-                
                 const bestFilm = data.results.reduce((max, film) => max.imdb_score > film.imdb_score ? max : film);
                 displayFilms([bestFilm], 'best-film', 'Top-rated Movie');
             } else {
@@ -108,16 +102,6 @@ function fetchBestFilm() {
             console.error('Error fetching best film:', error);
         });
 }
-
-
-document.getElementById('sort-button').addEventListener('click', () => {
-    const sortCriteria = document.getElementById('sort-select').value;
-    const minScore = document.getElementById('min-score-input').value;
-    fetchTopRatedFilms({
-        sort_by: sortCriteria,
-        imdb_score_min: minScore
-    });
-});
 
 function fetchTopRatedFilms(filters = {}) {
     const url = buildQueryURL('http://localhost:8000/api/v1/titles/', filters);
