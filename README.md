@@ -23,4 +23,4 @@ This website is designed to showcase films by fetching data from an API. Users c
 - Download all the files present in this repository and run index.HTML.
 NOTE: Films will only function if the API is online or run on your machine locally,
 
--https://github.com/OpenClassrooms-Student-Center/OCMovies-API-EN-FR for more information
+https://github.com/OpenClassrooms-Student-Center/OCMovies-API-EN-FR for more information
