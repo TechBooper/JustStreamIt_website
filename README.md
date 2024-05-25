@@ -1,4 +1,4 @@
-# FILM INFO WEBSITE - README
+# Newly made website for film showcases
 
 ## OVERVIEW
 
