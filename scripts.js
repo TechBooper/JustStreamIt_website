@@ -3,26 +3,18 @@ document.addEventListener('DOMContentLoaded', function() {
     fetchTopRatedFilms(); 
     fetchCategoryFilms('category-1', 'Drama');
     fetchCategoryFilms('category-2', 'Comedy');
-    fetchCategoryFilms('free-category', '', 'Free Category');
-    fetchCategoryFilms('free-category-2', '', 'Free Category 2');
+    fetchCategoryFilms('free-category', '');
+    fetchCategoryFilms('free-category-2', '');
 
     const categorySelect = document.getElementById('category-select');
-    if (categorySelect) {
-        populateCategories(categorySelect);
-    }
-
     const categorySelect2 = document.getElementById('category-select-2');
+    if (categorySelect) {
+        populateCategories(categorySelect, 'category-1');
+    }
     if (categorySelect2) {
         populateCategories(categorySelect2, 'free-category-2');
     }
 });
-
-
-async function getGenreName(genreId) {
-    const response = await fetch(`http://localhost:8000/api/v1/genres/${genreId}`);
-    const genre = await response.json();
-    return genre.name;
-}
 
 function displayFilms(films, containerId, title = '') {
     const container = document.getElementById(containerId);
@@ -62,20 +54,17 @@ function displayFilms(films, containerId, title = '') {
     }
 }
 
-
 function buildQueryURL(baseURL, queryParams) {
     const queryString = new URLSearchParams(queryParams).toString();
     return `${baseURL}?${queryString}`;
 }
 
 function reinitializeBootstrapComponents() {
-    
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     tooltipTriggerList.map(function (tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl);
     });
 
-    
     var modalElementList = [].slice.call(document.querySelectorAll('.modal'));
     modalElementList.map(function (modalEl) {
         return new bootstrap.Modal(modalEl);
@@ -148,20 +137,28 @@ function showFilmDetailsModal(filmId) {
         .catch(error => console.error('Error loading film details:', error));
 }
 
-
 async function fetchCategoryFilms(containerId, genreId = '', categoryName = '') {
     const url = buildQueryURL('http://localhost:8000/api/v1/titles/', { genre: genreId, page_size: 6 });
 
     const response = await fetch(url);
     const films = await response.json();
 
-    displayFilmsInCategory(containerId, films.results);
+    displayFilmsInCategory(containerId, films.results, categoryName);
 }
 
-
-async function displayFilmsInCategory(containerId, films) {
-    const categorySection = document.getElementById(containerId).querySelector('.film-list');
+function displayFilmsInCategory(containerId, films, categoryName = '') {
+    const categorySection = document.getElementById(containerId);
     categorySection.innerHTML = '';
+
+    if (categoryName) {
+        const titleElement = document.createElement('h2');
+        titleElement.textContent = categoryName;
+        categorySection.appendChild(titleElement);
+    }
+
+    const filmList = document.createElement('div');
+    filmList.classList.add('film-list', 'row');
+
     films.forEach(film => {
         const filmElement = document.createElement('div');
         filmElement.className = 'col-lg-3 col-md-4 col-sm-6'; 
@@ -175,13 +172,13 @@ async function displayFilmsInCategory(containerId, films) {
                 </div>
             </div>
         `;
-        categorySection.appendChild(filmElement);
+        filmList.appendChild(filmElement);
     });
+
+    categorySection.appendChild(filmList);
 }
 
-let genreMap = {};
-
-async function populateCategories(selectElement, containerId = 'free-category') {
+async function populateCategories(selectElement, containerId) {
     const genresResponse = await fetch('http://localhost:8000/api/v1/genres/');
     const genres = await genresResponse.json();
 
@@ -196,38 +193,4 @@ async function populateCategories(selectElement, containerId = 'free-category') 
         const selectedGenre = selectElement.value;
         fetchCategoryFilms(containerId, selectedGenre);
     });
-}
-
-function fetchFilmDetails(filmId) {
-    fetch(`http://localhost:8000/api/v1/titles/${filmId}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            displayFilmDetails(data);
-        })
-        .catch(error => {
-            console.error('Error fetching film details:', error);
-            document.getElementById('film-details').innerHTML = '<p>Error fetching film details.</p>';
-        });
-}
-
-function displayFilmDetails(film) {
-    const filmDetailsSection = document.getElementById('film-details');
-    filmDetailsSection.innerHTML = `
-        <div class="card">
-            <img src="${film.image_url}" class="card-img-top" alt="${film.title}">
-            <div class="card-body">
-                <h5 class="card-title">${film.title}</h5>
-                <p class="card-text">${film.description}</p>
-                <p class="card-text">Director: ${film.director}</p>
-                <p class="card-text">Release Date: ${film.date_published}</p>
-                <p class="card-text">IMDb Score: ${film.imdb_score}</p>
-                <a href="/" class="btn btn-primary">Go back</a>
-            </div>
-        </div>
-    `;
 }
