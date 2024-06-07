@@ -206,8 +206,6 @@ async function displayFilmsInCategory(containerId, films) {
     });
 }
 
-let genreMap = {};
-
 async function populateCategories(selectElement, containerId) {
     const genresResponse = await fetch('http://localhost:8000/api/v1/genres/');
     const genres = await genresResponse.json();
