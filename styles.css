@@ -2,11 +2,14 @@ body {
     background-color: #fff;
     color: #333;
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
 }
 
 .container {
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding: 20px 15px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 header img,
@@ -15,7 +18,7 @@ header img,
     object-fit: contain;
     width: auto;
     height: auto;
-    max-width: 100%;
+    max-width: 200px;
 }
 
 .modal-header, .modal-footer {
@@ -33,23 +36,32 @@ h2 {
     color: #495057;
     padding-bottom: 10px;
     border-bottom: 2px solid #e9ecef;
+    margin-bottom: 20px;
+}
+
+.cards-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
 }
 
 .card {
-    margin: 15px;
     background-color: #fff;
     border: none;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    margin-bottom: 80px;
+    display: flex;
+    flex-direction: column;
 }
 
 .card-img-top {
-    height: 450px;
+    width: 100%;
+    height: 300px;
     object-fit: cover;
 }
 
 .card-body {
     padding: 15px;
+    flex-grow: 1;
 }
 
 .card-title {
@@ -72,15 +84,23 @@ h2 {
     border-color: #004085;
 }
 
+@media (max-width: 1024px) {
+    .cards-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 @media (max-width: 768px) {
     .modal-dialog {
         margin: 10px;
     }
 
+    .cards-container {
+        grid-template-columns: 1fr;
+    }
+
     .card-img-top {
-        width: 100%;
-        min-height: 100px;
-        height: auto;
+        height: 200px;
     }
 
     .card {
@@ -91,5 +111,11 @@ h2 {
 .custom-img {
     height: 500px; 
     object-fit: cover;
-    width: 250px;
+    width: 100%;
+    max-width: 250px;
+    margin: 0 auto;
+}
+
+.film-list {
+    margin-top: 20px;
 }
