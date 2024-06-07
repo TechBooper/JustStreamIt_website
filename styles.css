@@ -119,3 +119,18 @@ h2 {
 .film-list {
     margin-top: 20px;
 }
+
+@media (max-width: 576px) {
+    #best-film .d-flex {
+        flex-direction: column;
+    }
+
+    #best-film-image {
+        width: 100%;
+        max-width: none;
+    }
+
+    #best-film-info {
+        padding: 10px;
+    }
+}
