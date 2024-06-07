@@ -225,23 +225,6 @@ async function populateCategories(selectElement, containerId) {
     });
 }
 
-function fetchFilmDetails(filmId) {
-    fetch(`http://localhost:8000/api/v1/titles/${filmId}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            displayFilmDetails(data);
-        })
-        .catch(error => {
-            console.error('Error fetching film details:', error);
-            document.getElementById('film-details').innerHTML = '<p>Error fetching film details.</p>';
-        });
-}
-
 function displayFilmDetails(film) {
     const filmDetailsSection = document.getElementById('film-details');
     filmDetailsSection.innerHTML = `
