@@ -95,10 +95,6 @@ async function displayBestFilm(film) {
     document.getElementById('best-film-details-btn').setAttribute('onclick', `event.stopPropagation(); showFilmDetailsModal('${film.id}')`);
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    fetchBestFilm(); 
-});
-
 
 function buildQueryURL(baseURL, queryParams) {
     const queryString = new URLSearchParams(queryParams).toString();
@@ -106,7 +102,10 @@ function buildQueryURL(baseURL, queryParams) {
 }
 
 function fetchBestFilm() {
-    fetch('http://localhost:8000/api/v1/titles/?ordering=-imdb_score&limit=1') // Fetching only the top film by IMDb score
+    fetch('http://localhost:8000/api/v1/titles/?ordering=-imdb_score&limit=1') 
+    
+    
+    // Fetching only the top film by IMDb score on the page, not the top film overall due to extreme amount of films
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -192,7 +191,7 @@ async function displayFilmsInCategory(containerId, films) {
     categorySection.innerHTML = '';
     films.forEach(film => {
         const filmElement = document.createElement('div');
-        filmElement.className = 'col'; // Adjusted class names for Bootstrap compatibility
+        filmElement.className = 'col'; // Bootstrap compatibility
         filmElement.innerHTML = `
             <div class="card h-100">
                 <img src="${film.image_url}" class="card-img-top custom-img" alt="${film.title}" onclick="showFilmDetailsModal(${film.id})">
